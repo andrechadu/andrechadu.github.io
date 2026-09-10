@@ -129,6 +129,8 @@ h1 { margin: 0; font-size: clamp(3rem, 7vw, 5.7rem); font-weight: 600; letter-sp
 .entry h2, .entry h3 { margin: 0 0 10px; font-size: 1.65rem; font-weight: 600; }
 .entry p { margin: 6px 0; }
 .entry .meta { color: var(--muted); font-size: .95rem; }
+.research-subentry { margin-top: 30px; padding-top: 26px; border-top: 1px solid var(--line); }
+.research-subentry h3 { margin: 0 0 10px; font-size: 1.35rem; }
 .entry-links { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 16px; }
 .entry-links a, .button {
   display: inline-flex;

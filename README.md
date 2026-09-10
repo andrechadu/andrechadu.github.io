@@ -1,6 +1,6 @@
 # André Chadú — Academic Website
 
-Static academic website prepared for GitHub Pages and based on the content structure of the existing Google Site.
+Static academic website prepared for GitHub Pages.
 
 ## Publish on GitHub Pages
 
@@ -25,13 +25,9 @@ with:
 <img class="profile-art" src="assets/profile.jpg" alt="Portrait of André Chadú">
 ```
 
-## Add the CV PDF
+## CV
 
-Put the PDF at `files/cv-andre-chadu.pdf` and change the button in `cv.html` from the Google Sites link to:
-
-```html
-<a class="btn" href="files/cv-andre-chadu.pdf" target="_blank">Open CV ↗</a>
-```
+The CV button in `cv.html` currently points to the public Google Drive version of the CV. If you later prefer to host the PDF directly in the repository, place it at `files/cv-andre-chadu.pdf` and update the button link accordingly.
 
 ## Files
 
