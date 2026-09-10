@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Base de dados de Macroeconomia da ANPEC: classificação histórica das questões por tópico entre 2010 e 2026.">
-  <title>Base de Macroeconomia — ANPEC | André Chadú</title>
+  <title>Macroeconomia — ANPEC | André Chadú</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="style.css">
   <style>
@@ -39,7 +39,7 @@
 <main class="dashboard-main">
   <header class="page-head dashboard-head">
     <p class="eyebrow">Ensino · ANPEC</p>
-    <h1>Base de Macroeconomia — ANPEC</h1>
+    <h1>Macroeconomia — ANPEC</h1>
 
     <div class="dashboard-intro">
       <p>Esta página reúne uma classificação das questões de <strong>Macroeconomia da ANPEC</strong> por tópico, cobrindo as provas de 2010 a 2026. O objetivo é facilitar a identificação dos temas mais recorrentes ao longo do tempo e oferecer um recurso complementar para estudo, revisão e preparação para a prova.</p>
@@ -76,15 +76,29 @@
 
     <p class="dashboard-note">Escolha abaixo quais tópicos deseja comparar. As linhas do gráfico são atualizadas automaticamente conforme a seleção.</p>
 
-    <div class="series-picker" aria-labelledby="seriesPickerTitle">
-      <div class="series-picker-head">
-        <div><strong id="seriesPickerTitle">Tópicos exibidos</strong> <span id="seriesCount" class="series-count">0 selecionados</span></div>
-        <div class="series-picker-actions">
-          <button type="button" id="selectAllTopics">Selecionar todos</button>
-          <button type="button" id="clearTopics">Limpar seleção</button>
+    <div class="series-selector" id="seriesSelector">
+      <span class="series-selector-label">Tópicos exibidos</span>
+
+      <div class="series-dropdown">
+        <button
+          type="button"
+          id="seriesDropdownButton"
+          class="series-dropdown-button"
+          aria-expanded="false"
+          aria-controls="seriesDropdownPanel"
+        >
+          <span id="seriesDropdownText">1 tópico selecionado</span>
+          <span class="series-dropdown-chevron" aria-hidden="true">▾</span>
+        </button>
+
+        <div id="seriesDropdownPanel" class="series-dropdown-panel" hidden>
+          <div class="series-dropdown-actions">
+            <button type="button" id="selectAllTopics">Selecionar todos</button>
+            <button type="button" id="clearTopics">Limpar seleção</button>
+          </div>
+          <div id="topicCheckboxes" class="topic-dropdown-list"></div>
         </div>
       </div>
-      <div id="topicCheckboxes" class="topic-checkbox-grid"></div>
     </div>
 
     <div class="chart-wrap chart-line-wrap"><canvas id="lineChart"></canvas></div>
@@ -192,18 +206,20 @@ let lineChart;
 const topicCheckboxes = document.getElementById('topicCheckboxes');
 const selectAllTopics = document.getElementById('selectAllTopics');
 const clearTopics = document.getElementById('clearTopics');
+const seriesSelector = document.getElementById('seriesSelector');
+const seriesDropdownButton = document.getElementById('seriesDropdownButton');
+const seriesDropdownPanel = document.getElementById('seriesDropdownPanel');
+const seriesDropdownText = document.getElementById('seriesDropdownText');
 
-const seriesCount = document.getElementById('seriesCount');
-
-// No series is preselected: the visitor chooses exactly which topics to compare.
+// One topic is visible on first load; visitors can then mark or unmark any series.
 db.topics.forEach((topic, index) => {
   const label = document.createElement('label');
-  label.className = 'topic-checkbox';
+  label.className = 'topic-dropdown-option';
 
   const input = document.createElement('input');
   input.type = 'checkbox';
   input.value = index;
-  input.checked = false;
+  input.checked = index === 0;
   input.addEventListener('change', updateLineFromSelection);
 
   const swatch = document.createElement('span');
@@ -266,9 +282,28 @@ function buildLine(indexes) {
 
 function updateLineFromSelection() {
   const indexes = selectedTopicIndexes();
-  seriesCount.textContent = `${indexes.length} ${indexes.length === 1 ? 'selecionado' : 'selecionados'}`;
+  const n = indexes.length;
+
+  if (n === 0) {
+    seriesDropdownText.textContent = 'Nenhum tópico selecionado';
+  } else if (n === 1) {
+    seriesDropdownText.textContent = '1 tópico selecionado';
+  } else {
+    seriesDropdownText.textContent = `${n} tópicos selecionados`;
+  }
+
   buildLine(indexes);
 }
+
+function setSeriesDropdown(open) {
+  seriesDropdownPanel.hidden = !open;
+  seriesDropdownButton.setAttribute('aria-expanded', String(open));
+}
+
+seriesDropdownButton.addEventListener('click', () => {
+  const isOpen = seriesDropdownButton.getAttribute('aria-expanded') === 'true';
+  setSeriesDropdown(!isOpen);
+});
 
 selectAllTopics.addEventListener('click', () => {
   topicCheckboxes.querySelectorAll('input[type="checkbox"]').forEach(input => {
@@ -282,6 +317,19 @@ clearTopics.addEventListener('click', () => {
     input.checked = false;
   });
   updateLineFromSelection();
+});
+
+document.addEventListener('click', event => {
+  if (!seriesSelector.contains(event.target)) {
+    setSeriesDropdown(false);
+  }
+});
+
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && seriesDropdownButton.getAttribute('aria-expanded') === 'true') {
+    setSeriesDropdown(false);
+    seriesDropdownButton.focus();
+  }
 });
 
 updateLineFromSelection();
