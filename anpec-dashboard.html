@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="ANPEC Macroeconomics database: topic incidence in Brazilian ANPEC macroeconomics exams from 2010 to 2026.">
+  <title>ANPEC Macroeconomics Database | André Chadú</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<header class="site-header">
+  <nav class="nav" aria-label="Main navigation">
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="research.html">Research</a>
+      <a class="active" href="teaching.html">Teaching</a>
+      <a href="cv.html">CV</a>
+      <a href="github.html">GitHub</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <header class="page-head dashboard-head">
+    <p class="eyebrow">Teaching · ANPEC</p>
+    <h1>ANPEC Macroeconomics Database</h1>
+    <p>Historical classification of Macroeconomics questions from the ANPEC exam by topic, covering 2010–2026. Mixed-topic items are divided proportionally across their assigned topics, so the figures are expressed in equivalent items.</p>
+    <div class="dashboard-actions">
+      <a class="button" href="teaching.html">← Back to Teaching</a>
+      <a class="button" href="https://drive.google.com/drive/folders/1h2VeKlPUrtCEXiQdkPMA2TNw3wddBKf5?usp=sharing" target="_blank" rel="noopener">Course Materials ↗</a>
+      <a class="button" href="files/ANPEC_macro_database_2010_2026.xlsx" download>Download database (.xlsx) ↓</a>
+    </div>
+  </header>
+
+  <section class="dashboard-kpis" aria-label="Database summary">
+    <div class="kpi"><span class="kpi-value">2010–2026</span><span class="kpi-label">Exam coverage</span></div>
+    <div class="kpi"><span class="kpi-value">17</span><span class="kpi-label">ANPEC exams</span></div>
+    <div class="kpi"><span class="kpi-value">1,008</span><span class="kpi-label">Economic items classified</span></div>
+    <div class="kpi"><span class="kpi-value">1,200</span><span class="kpi-label">Equivalent items</span></div>
+  </section>
+
+  <section class="dashboard-panel">
+    <div class="dashboard-panel-head">
+      <div>
+        <p class="entry-label">Selected year</p>
+        <h2>Topic incidence</h2>
+      </div>
+      <label class="dashboard-control">Year
+        <select id="yearSelect"></select>
+      </label>
+    </div>
+    <p class="dashboard-note">Number of equivalent items assigned to each topic in the selected exam year.</p>
+    <div class="chart-wrap chart-bar-wrap"><canvas id="barChart"></canvas></div>
+  </section>
+
+  <section class="dashboard-panel">
+    <div class="dashboard-panel-head">
+      <div>
+        <p class="entry-label">Time series</p>
+        <h2>Topic incidence over time</h2>
+      </div>
+      <label class="dashboard-control">Series
+        <select id="seriesMode">
+          <option value="top8">Top 8 topics</option>
+          <option value="all">All topics</option>
+        </select>
+      </label>
+    </div>
+    <p class="dashboard-note">The default view shows the eight topics with the largest total incidence over 2010–2026. Select “All topics” to reproduce the full set of series.</p>
+    <div class="chart-wrap chart-line-wrap"><canvas id="lineChart"></canvas></div>
+  </section>
+
+  <section class="dashboard-panel">
+    <div class="dashboard-panel-head">
+      <div>
+        <p class="entry-label">Matrix</p>
+        <h2>Equivalent items by topic and year</h2>
+      </div>
+    </div>
+    <p class="dashboard-note">Darker cells indicate a higher incidence within the matrix. Scroll horizontally on smaller screens.</p>
+    <div class="matrix-wrap">
+      <table class="anpec-matrix" id="matrixTable"></table>
+    </div>
+  </section>
+
+  <section class="dashboard-methodology">
+    <h2>Methodology</h2>
+    <p>True/false items receive a base weight of 1, while open or numerical questions receive a base weight of 5 equivalent items. When an item belongs to more than one topic, its weight is divided equally across those topics. The database was assembled from ANPEC Macroeconomics exams and classified item by item.</p>
+    <p class="meta">This dashboard is intended as a teaching and study resource. Classification choices may be revised as the database is audited and expanded.</p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span>© 2026 André Chadú · Last updated Sep/2026</span>
+    <div class="footer-links">
+      <a href="mailto:andrechadu@usp.br">Email</a>
+      <a href="https://br.linkedin.com/in/andre-chadu-b379121a0" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="http://lattes.cnpq.br/8335236264880303" target="_blank" rel="noopener">Lattes</a>
+      <a href="https://github.com/andrechadu?tab=repositories" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+const db = {"years": [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026], "topics": [{"topic": "01 — Contas Nacionais", "values": [10.0, 5.0, 1.0, 7.5, 4.0, 5.0, 4.0, 8.0, 0.0, 4.5, 9.0, 10.0, 5.5, 2.0, 1.0, 7.0, 4.0], "total": 87.5}, {"topic": "02 — Balanço de Pagamentos", "values": [0.0, 5.0, 4.0, 4.5, 1.0, 6.0, 5.0, 2.0, 5.0, 5.5, 5.0, 1.0, 4.5, 3.0, 5.0, 0.0, 5.0], "total": 61.5}, {"topic": "03 — Sistema Monetário", "values": [7.666666666666667, 5.0, 8.0, 4.0, 4.0, 2.0, 5.0, 6.0, 2.0, 2.5, 9.0, 1.0, 5.0, 6.0, 0.0, 0.0, 2.5], "total": 69.66666666666667}, {"topic": "04 — Demanda por Moeda", "values": [2.166666666666667, 3.0, 5.0, 4.0, 2.0, 3.0, 1.0, 0.0, 2.0, 2.5, 2.5, 6.0, 0.0, 3.0, 1.0, 1.0, 2.5], "total": 40.66666666666667}, {"topic": "05 — IS-LM", "values": [9.0, 10.0, 5.0, 5.0, 4.0, 6.5, 8.0, 5.0, 6.0, 6.5, 0.5, 2.5, 1.0, 0.0, 1.0, 2.0, 2.5], "total": 74.5}, {"topic": "06 — IS-LM-BP", "values": [7.0, 5.0, 15.0, 5.0, 6.0, 5.0, 4.5, 10.0, 10.0, 10.0, 5.0, 10.0, 8.0, 11.0, 8.0, 0.0, 0.0], "total": 119.5}, {"topic": "07a — Paridades", "values": [7.5, 5.0, 4.0, 11.0, 7.0, 6.0, 5.5, 0.0, 11.0, 9.0, 7.5, 6.0, 15.0, 19.0, 6.0, 2.5, 5.0], "total": 127.0}, {"topic": "07b — OA-DA", "values": [2.5, 1.0, 1.0, 1.0, 1.0, 0.0, 4.5, 0.5, 4.0, 2.0, 0.0, 7.0, 3.0, 1.0, 0.0, 4.5, 2.0], "total": 35.0}, {"topic": "08 — Curva de Phillips", "values": [7.5, 4.0, 5.5, 1.0, 7.0, 5.0, 3.5, 6.5, 2.0, 2.0, 4.0, 0.0, 8.0, 10.0, 9.0, 5.0, 1.5], "total": 81.5}, {"topic": "09 — Expectativas, Novos Clássicos e Novos Keynesianos", "values": [6.0, 2.0, 9.5, 6.0, 14.5, 13.5, 5.0, 7.0, 11.0, 8.5, 5.5, 10.5, 6.5, 5.0, 8.5, 13.0, 12.0], "total": 144.0}, {"topic": "10 — Ciclos Reais de Negócios (RBC)", "values": [1.0, 5.0, 0.0, 3.0, 0.5, 2.0, 2.0, 3.0, 1.0, 0.0, 2.0, 0.0, 1.5, 0.0, 0.5, 0.0, 1.0], "total": 22.5}, {"topic": "11 — Crescimento Econômico", "values": [10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 15.0, 10.0, 10.0, 10.0, 10.0, 15.0, 5.0, 5.0, 5.0, 5.0, 5.0], "total": 155.0}, {"topic": "12 — Consumo", "values": [3.0, 8.0, 2.0, 8.0, 5.0, 5.0, 6.0, 7.0, 3.0, 8.0, 7.0, 3.0, 12.0, 4.0, 5.0, 5.0, 2.0], "total": 93.0}, {"topic": "13 — Investimento", "values": [0.0, 2.0, 3.0, 3.0, 2.0, 1.0, 3.0, 4.0, 1.0, 1.0, 2.0, 2.0, 0.0, 0.0, 0.0, 0.0, 2.0], "total": 26.0}, {"topic": "14 — Dívida Pública e Senhoriagem", "values": [1.6666666666666667, 5.0, 1.0, 2.0, 7.0, 5.0, 3.0, 6.0, 5.0, 3.0, 5.0, 1.0, 0.0, 6.0, 0.0, 5.0, 3.0], "total": 58.66666666666667}, {"topic": "E1 — Mercados Financeiros", "values": [0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "total": 3.0}, {"topic": "E2 — Demanda de Bens e Complementaridade", "values": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "total": 1.0}], "yearTotals": [75.00000000000001, 75.0, 75.0, 75.0, 75.0, 75.0, 75.0, 75.0, 75.0, 75.0, 75.0, 75.0, 75.0, 75.0, 50.0, 50.0, 50.0]};
+const accent = '#7a1f2b';
+const ink = '#171717';
+const muted = '#66645f';
+const grid = 'rgba(102,100,95,.14)';
+const palette = ['#7a1f2b','#2f5d7c','#7a6531','#5b6f45','#6d4c76','#9a5d2d','#3f6d68','#8a4a54','#5d5d8a','#466b3d','#8c6a44','#3b637a','#7c4a6b','#60745a','#9a4e3f','#59606b','#806b2f'];
+
+function fmt(v) {
+  return Number.isInteger(v) ? String(v) : v.toFixed(2).replace(/0+$/,'').replace(/\.$/,'');
+}
+
+const yearSelect = document.getElementById('yearSelect');
+db.years.forEach(y => {
+  const option = document.createElement('option');
+  option.value = y;
+  option.textContent = y;
+  if (y === 2026) option.selected = true;
+  yearSelect.appendChild(option);
+});
+
+Chart.defaults.font.family = 'Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+Chart.defaults.color = muted;
+
+const barChart = new Chart(document.getElementById('barChart'), {
+  type: 'bar',
+  data: { labels: [], datasets: [{ label: 'Equivalent items', data: [], backgroundColor: accent, borderRadius: 3 }] },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => `${fmt(c.raw)} equivalent items` } } },
+    scales: {
+      x: { grid: { display: false }, ticks: { maxRotation: 55, minRotation: 55, color: muted } },
+      y: { beginAtZero: true, grid: { color: grid }, title: { display: true, text: 'Equivalent items', color: muted } }
+    }
+  }
+});
+
+function updateBar() {
+  const idx = db.years.indexOf(Number(yearSelect.value));
+  barChart.data.labels = db.topics.map(t => t.topic);
+  barChart.data.datasets[0].data = db.topics.map(t => t.values[idx]);
+  barChart.update();
+}
+yearSelect.addEventListener('change', updateBar);
+updateBar();
+
+let lineChart;
+function buildLine(mode) {
+  if (lineChart) lineChart.destroy();
+  let topics = [...db.topics];
+  if (mode === 'top8') topics = topics.sort((a,b) => b.total-a.total).slice(0,8);
+  const datasets = topics.map((t,i) => ({
+    label: t.topic,
+    data: t.values,
+    borderColor: palette[i % palette.length],
+    backgroundColor: palette[i % palette.length],
+    borderWidth: 2,
+    pointRadius: mode === 'all' ? 1.8 : 2.5,
+    pointHoverRadius: 4,
+    tension: 0.18
+  }));
+  lineChart = new Chart(document.getElementById('lineChart'), {
+    type: 'line',
+    data: { labels: db.years, datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'nearest', intersect: false },
+      plugins: {
+        legend: { position: 'bottom', labels: { boxWidth: 10, boxHeight: 10, padding: 14, usePointStyle: true, pointStyle: 'line' } },
+        tooltip: { callbacks: { label: c => `${c.dataset.label}: ${fmt(c.raw)}` } }
+      },
+      scales: {
+        x: { grid: { display: false }, title: { display: true, text: 'Year', color: muted } },
+        y: { beginAtZero: true, grid: { color: grid }, title: { display: true, text: 'Equivalent items', color: muted } }
+      }
+    }
+  });
+}
+const seriesMode = document.getElementById('seriesMode');
+seriesMode.addEventListener('change', () => buildLine(seriesMode.value));
+buildLine('top8');
+
+function heatColor(value, max) {
+  if (!value || max <= 0) return 'rgba(122,31,43,0.025)';
+  const a = 0.08 + 0.42 * (value/max);
+  return `rgba(122,31,43,${a.toFixed(3)})`;
+}
+
+const table = document.getElementById('matrixTable');
+const thead = document.createElement('thead');
+const hr = document.createElement('tr');
+['Topic', ...db.years.map(String), 'Total'].forEach((label, idx) => {
+  const th = document.createElement('th');
+  th.textContent = label;
+  if (idx === 0) th.className = 'matrix-topic';
+  hr.appendChild(th);
+});
+thead.appendChild(hr);
+table.appendChild(thead);
+
+const tbody = document.createElement('tbody');
+const maxValue = Math.max(...db.topics.flatMap(t => t.values));
+db.topics.forEach(t => {
+  const tr = document.createElement('tr');
+  const name = document.createElement('th');
+  name.scope = 'row';
+  name.className = 'matrix-topic';
+  name.textContent = t.topic;
+  tr.appendChild(name);
+  t.values.forEach(v => {
+    const td = document.createElement('td');
+    td.textContent = fmt(v);
+    td.style.backgroundColor = heatColor(v,maxValue);
+    td.title = `${t.topic}: ${fmt(v)} equivalent items`;
+    tr.appendChild(td);
+  });
+  const total = document.createElement('td');
+  total.className = 'matrix-total';
+  total.textContent = fmt(t.total);
+  tr.appendChild(total);
+  tbody.appendChild(tr);
+});
+
+const totalRow = document.createElement('tr');
+totalRow.className = 'matrix-grand-total';
+const totalLabel = document.createElement('th');
+totalLabel.scope='row';
+totalLabel.className='matrix-topic';
+totalLabel.textContent='Total per exam';
+totalRow.appendChild(totalLabel);
+db.yearTotals.forEach(v => { const td=document.createElement('td'); td.textContent=fmt(v); totalRow.appendChild(td); });
+const grand = document.createElement('td');
+grand.textContent = fmt(db.yearTotals.reduce((a,b)=>a+b,0));
+totalRow.appendChild(grand);
+tbody.appendChild(totalRow);
+table.appendChild(tbody);
+</script>
+</body>
+</html>

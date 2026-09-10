@@ -322,6 +322,55 @@ h3 {
 .btn-secondary { background: transparent; color: var(--accent); }
 .btn-secondary:hover { background: var(--accent); color: #fff; }
 
+/* ========================================================================== */
+/* CV PREVIEW                                                                 */
+/* ========================================================================== */
+
+.cv-preview {
+  margin-top: 34px;
+  padding: 30px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+
+.cv-preview-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 20px;
+}
+
+.cv-preview-head .eyebrow {
+  margin-bottom: 7px;
+}
+
+.cv-preview-head h2 {
+  margin: 0;
+  font-size: 1.7rem;
+  font-weight: 600;
+}
+
+.cv-preview-head > a {
+  flex: 0 0 auto;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.cv-pdf-viewer {
+  display: block;
+  width: 100%;
+  height: 920px;
+  border: 1px solid var(--line);
+  background: #fff;
+}
+
+.cv-preview-fallback {
+  margin: 14px 0 0;
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
 .site-footer { border-top: 1px solid var(--line); }
 
 .footer-inner {
@@ -396,6 +445,21 @@ h3 {
 
   .cv-links { justify-content: flex-start; }
   .btn { width: fit-content; }
+
+  .cv-preview {
+    padding: 22px 16px;
+  }
+
+  .cv-preview-head {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .cv-pdf-viewer {
+    height: 720px;
+  }
+
   .footer-inner { flex-direction: column; }
 }
 
@@ -417,4 +481,223 @@ h3 {
   .hero h1 { font-size: 3rem; }
   .hero-subtitle { font-size: 1.15rem; }
   .contact-row { gap: 8px 18px; }
+
+  .cv-pdf-viewer {
+    height: 600px;
+  }
+}
+
+
+/* ========================================================================== */
+/* ANPEC DASHBOARD                                                            */
+/* ========================================================================== */
+
+.dashboard-head h1 {
+  max-width: 900px;
+  font-size: clamp(2.7rem, 6vw, 4.6rem);
+}
+
+.dashboard-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 18px;
+  margin-top: 24px;
+}
+
+.dashboard-actions .button {
+  text-decoration: none;
+}
+
+.dashboard-kpis {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 38px;
+}
+
+.kpi {
+  padding: 20px 22px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+
+.kpi-value {
+  display: block;
+  font-family: var(--serif);
+  font-size: 1.7rem;
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.kpi-label {
+  display: block;
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: .84rem;
+}
+
+.dashboard-panel {
+  margin-top: 34px;
+  padding: 30px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+
+.dashboard-panel-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.dashboard-panel h2,
+.dashboard-methodology h2 {
+  margin: 2px 0 0;
+  font-size: 1.7rem;
+  font-weight: 600;
+}
+
+.dashboard-note {
+  margin: 8px 0 22px;
+  color: var(--muted);
+  font-size: .92rem;
+}
+
+.dashboard-control {
+  display: grid;
+  gap: 5px;
+  min-width: 145px;
+  color: var(--muted);
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .035em;
+  text-transform: uppercase;
+}
+
+.dashboard-control select {
+  min-height: 40px;
+  padding: 0 34px 0 11px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--ink);
+  font: inherit;
+  font-size: .92rem;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.chart-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.chart-bar-wrap { height: 470px; }
+.chart-line-wrap { height: 510px; }
+
+.matrix-wrap {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+}
+
+.anpec-matrix {
+  width: max-content;
+  min-width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: .78rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.anpec-matrix th,
+.anpec-matrix td {
+  padding: 9px 10px;
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.anpec-matrix thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--ink);
+  color: #fff;
+  font-weight: 700;
+}
+
+.anpec-matrix .matrix-topic {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  min-width: 310px;
+  max-width: 310px;
+  background: var(--surface);
+  text-align: left;
+  white-space: normal;
+}
+
+.anpec-matrix thead .matrix-topic {
+  z-index: 3;
+  background: var(--ink);
+}
+
+.anpec-matrix .matrix-total,
+.anpec-matrix .matrix-grand-total td,
+.anpec-matrix .matrix-grand-total th {
+  background: #ecece7 !important;
+  font-weight: 700;
+}
+
+.dashboard-methodology {
+  max-width: 780px;
+  padding-top: 54px;
+}
+
+.dashboard-methodology p {
+  margin: 12px 0 0;
+}
+
+@media (max-width: 760px) {
+  .dashboard-kpis {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dashboard-panel {
+    padding: 22px 16px;
+  }
+
+  .dashboard-panel-head {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .dashboard-control {
+    width: 100%;
+  }
+
+  .chart-bar-wrap { height: 520px; }
+  .chart-line-wrap { height: 560px; }
+
+  .anpec-matrix .matrix-topic {
+    min-width: 240px;
+    max-width: 240px;
+  }
+}
+
+@media (max-width: 510px) {
+  .dashboard-kpis {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .kpi {
+    padding: 16px;
+  }
+
+  .kpi-value {
+    font-size: 1.4rem;
+  }
 }

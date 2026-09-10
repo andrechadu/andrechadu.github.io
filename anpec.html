@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Unofficial topic-level database and interactive dashboard for ANPEC Macroeconomics exams, 2010–2026.">
+  <title>ANPEC Macroeconomics Database | André Chadú</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site-header">
+  <nav class="nav" aria-label="Main navigation">
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="research.html">Research</a>
+      <a href="teaching.html">Teaching</a>
+      <a class="active" href="anpec.html">ANPEC Data</a>
+      <a href="cv.html">CV</a>
+      <a href="github.html">GitHub</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <header class="page-head anpec-page-head">
+    <p class="eyebrow">Teaching data · Macroeconomics</p>
+    <h1>ANPEC Macroeconomics Database</h1>
+    <p>An interactive, topic-level view of Macroeconomics questions from ANPEC exams between 2010 and 2026. The classification is unofficial and was prepared for teaching and study purposes.</p>
+    <div class="entry-links anpec-actions">
+      <a class="btn" href="files/ANPEC_macro_topicos_2010_2026.xlsx" download>Download Excel</a>
+      <a class="btn btn-secondary" href="https://drive.google.com/drive/folders/1h2VeKlPUrtCEXiQdkPMA2TNw3wddBKf5?usp=sharing" target="_blank" rel="noopener">ANPEC course materials ↗</a>
+    </div>
+  </header>
+
+  <section class="anpec-kpis" aria-label="Database summary">
+    <div class="anpec-kpi"><strong id="kpi-exams">17</strong><span>exams</span></div>
+    <div class="anpec-kpi"><strong id="kpi-years">2010–2026</strong><span>coverage</span></div>
+    <div class="anpec-kpi"><strong id="kpi-topics">17</strong><span>topic categories</span></div>
+    <div class="anpec-kpi"><strong id="kpi-items">1,200</strong><span>equivalent items</span></div>
+  </section>
+
+  <section class="anpec-panel">
+    <div class="anpec-panel-head">
+      <div>
+        <p class="eyebrow">Dashboard</p>
+        <h2>Topic incidence by exam</h2>
+        <p class="meta">Choose an exam year to compare the relative incidence of topics.</p>
+      </div>
+      <label class="anpec-select-label" for="year-select">Exam year
+        <select id="year-select" class="anpec-select"></select>
+      </label>
+    </div>
+    <div id="bar-chart" class="anpec-bars" aria-live="polite"></div>
+  </section>
+
+  <section class="anpec-panel">
+    <div class="anpec-panel-head">
+      <div>
+        <p class="eyebrow">Time series</p>
+        <h2>Topics over time</h2>
+        <p class="meta">Select up to six topics to compare their incidence across exams.</p>
+      </div>
+    </div>
+    <div id="topic-filters" class="anpec-topic-filters"></div>
+    <div class="anpec-chart-wrap">
+      <svg id="line-chart" class="anpec-line-chart" role="img" aria-label="Time series chart of selected ANPEC Macroeconomics topics"></svg>
+    </div>
+    <div id="line-legend" class="anpec-legend"></div>
+  </section>
+
+  <section class="anpec-panel anpec-matrix-panel">
+    <div class="anpec-panel-head">
+      <div>
+        <p class="eyebrow">Matrix</p>
+        <h2>Topic × exam year</h2>
+        <p class="meta">Values are equivalent items. Darker cells indicate greater incidence within the matrix.</p>
+      </div>
+    </div>
+    <div class="anpec-table-wrap">
+      <table id="matrix-table" class="anpec-matrix"></table>
+    </div>
+  </section>
+
+  <section class="anpec-methodology">
+    <h2>Methodology</h2>
+    <div class="prose">
+      <p>Each exam item is classified by macroeconomic topic. When a single item involves <em>n</em> topics, its weight is divided equally across them, so each topic receives <em>1/n</em> of an equivalent item. This preserves the total weight of each exam while allowing mixed-topic questions to be represented in the database.</p>
+      <p>The underlying workbook also contains the item-level base, validation checks, topic definitions, and the original Excel dashboard. This webpage reproduces the main dashboard and matrix in a format that works directly on GitHub Pages.</p>
+      <p class="meta">Unofficial database. It is not affiliated with or endorsed by ANPEC.</p>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span>© 2026 André Chadú · Last updated Sep/2026</span>
+    <div class="footer-links">
+      <a href="mailto:andrechadu@usp.br">Email</a>
+      <a href="https://br.linkedin.com/in/andre-chadu-b379121a0" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="http://lattes.cnpq.br/8335236264880303" target="_blank" rel="noopener">Lattes</a>
+      <a href="https://github.com/andrechadu?tab=repositories" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/anpec-data.js"></script>
+<script src="assets/anpec-dashboard.js"></script>
+</body>
+</html>
