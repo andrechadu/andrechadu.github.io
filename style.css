@@ -175,6 +175,9 @@ h1 { margin: 0; font-size: clamp(3rem, 7vw, 5.7rem); font-weight: 600; letter-sp
   white-space: nowrap;
 }
 .btn:hover { background: var(--accent-dark); color: #fff; }
+.cv-links { display: flex; flex-wrap: wrap; gap: 10px; justify-content: flex-end; }
+.btn-secondary { background: transparent; color: var(--accent); }
+.btn-secondary:hover { background: var(--accent); color: #fff; }
 
 .site-footer { border-top: 1px solid var(--line); }
 .footer-inner {
@@ -207,6 +210,7 @@ h1 { margin: 0; font-size: clamp(3rem, 7vw, 5.7rem); font-weight: 600; letter-sp
   .course-head { grid-template-columns: 1fr; gap: 4px; }
   .course-term { text-align: left; }
   .cv-box { grid-template-columns: 1fr; padding: 26px; }
+  .cv-links { justify-content: flex-start; }
   .btn { width: fit-content; }
   .footer-inner { flex-direction: column; }
 }
